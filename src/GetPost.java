@@ -14,17 +14,26 @@ import java.net.URL;
  * https://www.journaldev.com/7148/java-httpurlconnection-example-java-http-request-get-post
  */
 
+
+
 public class GetPost {
 
 	InetAddress address;
 	Socket s;
 	boolean isVerbose;
 
-	public void getRequest() {
+	public static void main(String[] args) {
+		GetPost getPOst = new GetPost();
+		//getPOst.getRequest();
+		//getPOst.postRequest();
+	}
+	
+	public void getRequest(Request request) {
 		// TODO Auto-generated method stub
 
 		try {
 
+			System.out.println("Start Get: ");
 			URL url = new URL("http://httpbin.org/get?course=networking&assignment=1");
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			con.setRequestMethod("GET");
@@ -45,7 +54,7 @@ public class GetPost {
 				}
 				System.out.println("*** Output ***");
 				isVerbose = false;
-				if (isVerbose) {
+				if (request.isVerbose()) {
 
 					System.out.println("HTTP/1.1 " + con.getResponseCode() + " " + con.getResponseMessage());
 					System.out.println("Server: " + con.getHeaderField(6));

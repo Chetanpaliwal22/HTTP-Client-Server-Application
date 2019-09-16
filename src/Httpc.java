@@ -5,13 +5,42 @@ public class Httpc {
 		// TODO Auto-generated method stub
 		try {
 
+			System.out.println("Start HTTPC Code.");
+			Request request = new Request();
 			GetPost getPost = new GetPost();
+			
+			System.out.println(args[0]);
+			System.out.println(args[1]);
+			System.out.println(args[2]);
+			System.out.println(args[3]);
+			System.out.println(args.length);
 
-			if (args[0].equalsIgnoreCase("get")) {
-				getPost.getRequest();
-			} else if (args[0].equalsIgnoreCase("post")) {
+			
+			if (args[1].equalsIgnoreCase("get")) {
+
+				// ================
+				int i = 2;
+				while (i < args.length) {
+					if (args[i].equalsIgnoreCase("-v")) {
+						System.out.println("in verbose");
+						request.setVerbose(true);
+						i++;
+					} else if (args[i].equalsIgnoreCase("-h")) {
+						System.out.println("in -h");
+						String[] argumentsArray = args[i + 1].split(":");
+						request.setKey(argumentsArray[0]);
+						request.setValue(argumentsArray[1]);
+						i += 2;
+					}else {
+						System.out.println("do nothing");
+						i++;
+					}
+				}
+				request.setUrl(args[3]);
+				getPost.getRequest(request);
+			} else if (args[1].equalsIgnoreCase("post")) {
 				getPost.postRequest();
-			} else if (args[0].equalsIgnoreCase("help")) {
+			} else if (args[1].equalsIgnoreCase("help")) {
 				getHelp();
 			}
 

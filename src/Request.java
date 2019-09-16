@@ -4,15 +4,25 @@
 public class Request {
 
 	public String url;
-	public String inputFile;
-	public String outputFile;
+	public String key;
+	public String value;
+	public boolean isVerbose;
 
 	Request() {
-
 		this.url = "";
-		this.inputFile = "";
-		this.outputFile = "";
+		this.isVerbose = false;
 	}
+	
+
+	public boolean isVerbose() {
+		return isVerbose;
+	}
+
+
+	public void setVerbose(boolean isVerbose) {
+		this.isVerbose = isVerbose;
+	}
+
 
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
@@ -27,20 +37,25 @@ public class Request {
 		this.url = url;
 	}
 
-	public String getInputFile() {
-		return inputFile;
+
+	public String getKey() {
+		return key;
 	}
 
-	public void setInputFile(String inputFile) {
-		this.inputFile = inputFile;
+
+	public void setKey(String key) {
+		this.key = key;
 	}
 
-	public String getOutputFile() {
-		return outputFile;
+
+	public String getValue() {
+		return value;
 	}
 
-	public void setOutputFile(String outputFile) {
-		this.outputFile = outputFile;
+
+	public void setValue(String value) {
+		this.value = value;
 	}
 
+	
 }
