@@ -8,38 +8,42 @@ public class Httpc {
 			System.out.println("Start HTTPC Code.");
 			Request request = new Request();
 			GetPost getPost = new GetPost();
-			
-			System.out.println(args[0]);
-			System.out.println(args[1]);
-			System.out.println(args[2]);
-			System.out.println(args[3]);
-			System.out.println(args.length);
 
-			
 			if (args[1].equalsIgnoreCase("get")) {
 
-				// ================
 				int i = 2;
 				while (i < args.length) {
 					if (args[i].equalsIgnoreCase("-v")) {
-						System.out.println("in verbose");
+						// System.out.println("in verbose");
 						request.setVerbose(true);
 						i++;
-					} else if (args[i].equalsIgnoreCase("-h")) {
-						System.out.println("in -h");
-						String[] argumentsArray = args[i + 1].split(":");
-						request.setKey(argumentsArray[0]);
-						request.setValue(argumentsArray[1]);
-						i += 2;
-					}else {
-						System.out.println("do nothing");
+					} else if (args[i].contains("http")) {
+						request.setUrl(args[i]);
+						i++;
+					} else {
+						//System.out.println("do nothing");
 						i++;
 					}
 				}
-				request.setUrl(args[3]);
 				getPost.getRequest(request);
 			} else if (args[1].equalsIgnoreCase("post")) {
-				getPost.postRequest();
+				int i = 2;
+				while (i < args.length) {
+					if (args[i].equalsIgnoreCase("-v")) {
+						request.setVerbose(true);
+						i++;
+					} else if (args[i].equalsIgnoreCase("--d")) {
+						request.setKey(args[i + 1]);
+						i += 2;
+					} else if (args[i].contains("http")) {
+						request.setUrl(args[i]);
+						i++;
+					} else {
+						//System.out.println("do nothing");
+						i++;
+					}
+				}
+				getPost.postRequest(request);
 			} else if (args[1].equalsIgnoreCase("help")) {
 				getHelp();
 			}
