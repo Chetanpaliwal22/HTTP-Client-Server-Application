@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.DataOutputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
@@ -6,6 +7,8 @@ import java.net.HttpURLConnection;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * This class implements basic get and post. Reference:
@@ -34,6 +37,18 @@ public class GetPost {
 			URL url = new URL(request.getUrl());
 			HttpURLConnection con = (HttpURLConnection) url.openConnection();
 			con.setRequestMethod("GET");
+
+			// Setting parameter
+//			Map<String, String> parameters = new HashMap<>();
+//			parameters.put(request.getKey(), request.getValue());
+//			
+//			con.setDoOutput(true);
+//			DataOutputStream out = new DataOutputStream(con.getOutputStream());
+//			out.writeBytes(request.getParameter());
+
+			if (request.getParameter() != null) {
+				System.out.println(request.getParameter());
+			}
 
 			if (con.getResponseCode() == HttpURLConnection.HTTP_OK) {
 
