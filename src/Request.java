@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,9 +9,58 @@ public class Request {
 
 	public String url;
 	public String key;
+	public String port = "80";
+	public int localHostPort = 8080;
+	public String host ="";
 	public String value;
 	public boolean isVerbose;
 	Map<String, String> requestParameter;
+	public String fileData;
+	public String inlineData;
+	public String userAgent = "Windows NT 6.3";
+	public int[] redirectCodeArray = {301,302,303};
+	public boolean dOptionStatus = false;
+	public boolean fOptionStatus = false;
+
+	public boolean isdOptionStatus() {
+		return dOptionStatus;
+	}
+
+	public void setdOptionStatus(boolean dOptionStatus) {
+		this.dOptionStatus = dOptionStatus;
+	}
+
+	public boolean isfOptionStatus() {
+		return fOptionStatus;
+	}
+
+	public void setfOptionStatus(boolean fOptionStatus) {
+		this.fOptionStatus = fOptionStatus;
+	}
+
+	public Map<String, String> getRequestParameter() {
+		return requestParameter;
+	}
+
+	public void setRequestParameter(Map<String, String> requestParameter) {
+		this.requestParameter = requestParameter;
+	}
+
+	public String getInlineData() {
+		return inlineData;
+	}
+
+	public void setInlineData(String inlineData) {
+		this.inlineData = inlineData;
+	}
+
+	public String getFileData() {
+		return fileData;
+	}
+
+	public void setFileData(String fileData) {
+		this.fileData = fileData;
+	}
 
 	Request() {
 		this.url = "";
