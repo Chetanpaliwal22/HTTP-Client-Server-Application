@@ -2,6 +2,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.logging.Logger;
 
@@ -60,6 +61,7 @@ public class Httpc {
 				}
 				request.setInlineData(args[i + 1]);
 				request.isdfOptionDone = true;
+				request.setdOptionStatus(true);
 				i += 2;
 			} else if (args[i].contains("http")) {
 				request.setUrl(args[i].substring(1, args[i].length() - 1));
@@ -78,9 +80,11 @@ public class Httpc {
 					System.out.println("File doesn't exist.");
 					return;
 				}
+				BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
 				int k =0;
-				while ((k = fr.read()) != -1) {
-					inputFileData += (char) charFile;
+				String fileLine;
+				while ((fileLine = bufferedReader.readLine()) != null) {
+					inputFileData += fileLine;
 				}
 				fileData += "--" + "Boundary Condition Here" + request.crlf;
 				fileData += "Content-Disposition: form-data; name=\"file\"; filename=" + file + request.crlf;
@@ -94,8 +98,15 @@ public class Httpc {
 				i += 2;
 				request.setFileData(inputFileData);
 			} else if (args[i].contains("-o")) {
-				// Pending
-				i++;
+				if(args[i+1] != null && args[i+1].length() >0) {
+				   String outputFileName = args[i+1];
+				   request.fileName = outputFileName;
+                    request.isWriteFile = true;
+                } else {
+                    System.out.println("Output file name does not exist.");
+                    return;
+                }				
+				i+=2;
 			} else {
 				System.out.println("Invalid Parameter.");
 				i++;

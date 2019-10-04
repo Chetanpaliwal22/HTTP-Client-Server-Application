@@ -1,3 +1,5 @@
+import java.io.File;
+import java.io.FileWriter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,9 +24,11 @@ public class Request {
 	public boolean dOptionStatus = false;
 	public boolean fOptionStatus = false;
 	String USER_AGENT = "CN Concordia - HTTP/1.0";
+	public String fileName = "";
 	ArrayList<String> headers = new ArrayList<String>();
 	boolean isdfOptionDone = false;
 	String crlf = "\r\n";
+	public boolean isWriteFile;
 
 	public boolean isIsdfOptionDone() {
 		return isdfOptionDone;
