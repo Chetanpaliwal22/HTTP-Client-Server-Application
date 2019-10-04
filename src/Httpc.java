@@ -67,7 +67,9 @@ public class Httpc {
 			} else if (args[i].contains("http")) {
 				request.setUrl(args[i].substring(1, args[i].length() - 1));
 				i++;
-			} else if (args[i].contains("-f") && !request.isdOptionStatus()) {
+			} else if (args[i].contains("-f")) {
+				if(request.dOptionStatus)
+					return;
 				request.fOptionStatus = true;
 
 				String inputFileData = "";
@@ -118,6 +120,7 @@ public class Httpc {
 	}
 
 	private static void getGetRequest(String[] args, Request request, GetPost getPost) {
+		try {
 		int i = 2;
 		while (i < args.length) {
 			if (args[i].equalsIgnoreCase("-v")) {
@@ -148,15 +151,29 @@ public class Httpc {
 			} else if (args[i].contains("-d")) {
 				System.out.println("Invalid Argument");
 				return;
-			}
-
-			else {
+			}else if (args[i].contains("-f")) {
+				System.out.println("Invalid Parameter");
+				return;
+			} else if (args[i].contains("-o")) {
+				if (args[i + 1] != null && args[i + 1].length() > 0) {
+					String outputFileName = args[i + 1];
+					request.fileName = outputFileName;
+					request.isWriteFile = true;
+				} else {
+					System.out.println("Output file name does not exist.");
+					return;
+				}
+				i += 2;
+			}else {
 				// System.out.println("do nothing");
 				System.out.println("Invalid Argument.");
 				i++;
 			}
 		}
 		getPost.getRequest(request);
+		}catch(Exception e) {
+			e.printStackTrace();
+		}
 	}
 
 	private static void getHelp(String[] args) {

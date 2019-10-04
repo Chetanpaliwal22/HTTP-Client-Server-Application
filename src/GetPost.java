@@ -64,6 +64,7 @@ public class GetPost {
 
 					System.out.println("URL: " + request.getUrl());
 
+				//	if(!(request.redirectURL != null && request.redirectURL.length() >0)) {
 					if (request.getUrl() == null || request.getUrl().isEmpty()
 							|| request.getUrl().equalsIgnoreCase("")) {
 						throw new Exception("Get: Missing URL");
@@ -82,7 +83,7 @@ public class GetPost {
 							request.host = request.getUrl().substring(7, indexLocation);
 							path = request.getUrl().substring(indexLocation);
 							if(request.redirectURL != null && request.redirectURL.length() >0) {
-								request.host = request.getUrl().substring(8, request.getUrl().length()-1);
+								request.host = request.getUrl().substring(7, request.getUrl().length()-1);
 							}
 						} else if (indexLocation == -1) {
 							request.host = request.getUrl().substring(7, request.getUrl().length());
@@ -90,6 +91,7 @@ public class GetPost {
 								request.host = request.getUrl().substring(8, request.getUrl().length()-1);
 							}
 						}
+				//	}
 					}
 
 					// Socket socket = new Socket("localhost", 80);
@@ -107,7 +109,7 @@ public class GetPost {
 					for (String headerValue : request.getHeaders()) {
 						bw.write(headerValue + crlf);
 					}
-
+					
 					bw.write(crlf);
 					bw.flush();
 
@@ -171,7 +173,26 @@ public class GetPost {
 				finalOutput += headerMessage;
 			}
 			finalOutput = finalOutput + bodyMessage;
-			System.out.println(finalOutput);
+			
+			if (request.isWriteFile) {
+
+				BufferedWriter bw = null;
+				FileWriter fw = null;
+
+				String content = "This is the content to write into file\n";
+
+				fw = new FileWriter(request.fileName);
+				bw = new BufferedWriter(fw);
+				bw.write(finalOutput);
+
+				bw.flush();
+				bw.close();
+				System.out.println("writing in file done.");
+			} else {
+				System.out.println(finalOutput);
+			}
+			
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -277,7 +298,7 @@ public class GetPost {
 				bw.write("Content-Length: " + pushData.length() + crlf);
 			}
 
-			//System.out.println("pushData: " + pushData);
+			System.out.println("pushData: " + pushData);
 
 			bw.write(crlf);
 			bw.write(pushData);
