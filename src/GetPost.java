@@ -81,8 +81,14 @@ public class GetPost {
 						if (indexLocation != -1) {
 							request.host = request.getUrl().substring(7, indexLocation);
 							path = request.getUrl().substring(indexLocation);
+							if(request.redirectURL != null && request.redirectURL.length() >0) {
+								request.host = request.getUrl().substring(8, request.getUrl().length()-1);
+							}
 						} else if (indexLocation == -1) {
 							request.host = request.getUrl().substring(7, request.getUrl().length());
+							if(request.redirectURL != null && request.redirectURL.length() >0) {
+								request.host = request.getUrl().substring(8, request.getUrl().length()-1);
+							}
 						}
 					}
 
@@ -113,24 +119,27 @@ public class GetPost {
 					while ((outputLine = br.readLine()) != null) {
 
 						// System.out.println("ABC "+ outputLine);
-						if (outputLine.contains("302")) {
+						if (outputLine.contains("302") || outputLine.contains("301")) {
 							isRedirect = true;
 							// redirectGetRequest(request, con);
 						} else if (!hasContent && outputLine.equals("")) {
 							hasContent = true;
 						}
-
+						//System.out.println("OL"+outputLine);
 						// handle redirect location
-						if (isRedirect && outputLine.substring(0, 10).equals("Location: ")
+						if (isRedirect && outputLine.length() >9 &&outputLine.substring(0, 10).equals("Location: ")
 								&& outputLine.length() > 10) {
 							String newCompleteURL = outputLine.substring(10, outputLine.length());
 							// determine relative/absolute redirect
+							
 							if (newCompleteURL.length() >= 7 && newCompleteURL.substring(0, 7).equals("http://")) {
 								newurl = newCompleteURL;
 							} else {
 								newurl = "http://" + request.host + newCompleteURL;
 							}
+							newurl = newCompleteURL;
 							if (isRedirect) {
+								request.redirectURL = newurl;
 								System.out.println("302: redirect to \"" + newurl + "\"");
 							}
 							break;
@@ -148,9 +157,11 @@ public class GetPost {
 					}
 
 					if(isRedirect) {
+						request.setUrl(request.redirectURL);
 						isRedirect = false;
 						headerMessage = "";
 						bodyMessage = "";
+						continue;
 					}
 					break;
 				}
@@ -253,8 +264,7 @@ public class GetPost {
 				}
 			}
 
-			System.out.println("here");
-
+			
 			String pushData = "";
 
 			if (request.dOptionStatus)
@@ -267,7 +277,7 @@ public class GetPost {
 				bw.write("Content-Length: " + pushData.length() + crlf);
 			}
 
-			System.out.println("pushData: " + pushData);
+			//System.out.println("pushData: " + pushData);
 
 			bw.write(crlf);
 			bw.write(pushData);
@@ -278,8 +288,7 @@ public class GetPost {
 			br = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 			String outputLine;
 
-			System.out.println("Output line: " + br.read());
-
+			
 			while ((outputLine = br.readLine()) != null) {
 
 				// System.out.println("ABC "+ outputLine);

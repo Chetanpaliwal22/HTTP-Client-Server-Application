@@ -54,12 +54,13 @@ public class Httpc {
 					System.out.println("Data format incorrect");
 					logger.info("Data format for key value incorrect.");
 				}
-			} else if (args[i].equalsIgnoreCase("-d")) {
+			} else if (args[i].equalsIgnoreCase("-d") || args[i].equalsIgnoreCase("--d")) {
 				if (request.isdfOptionDone) {
 					System.out.println("d f Option already utilized. Incorrect Request.");
 					return;
 				}
 				request.setInlineData(args[i + 1]);
+				System.out.println(args[i+1]);
 				request.isdfOptionDone = true;
 				request.setdOptionStatus(true);
 				i += 2;
@@ -71,7 +72,7 @@ public class Httpc {
 
 				String inputFileData = "";
 				File file = new File(args[i + 1]);
-				System.out.println(args[i+1]);
+				System.out.println(args[i + 1]);
 				FileReader fr = new FileReader(args[i + 1]);
 
 				int charFile = 0;
@@ -81,7 +82,7 @@ public class Httpc {
 					return;
 				}
 				BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
-				int k =0;
+				int k = 0;
 				String fileLine;
 				while ((fileLine = bufferedReader.readLine()) != null) {
 					inputFileData += fileLine;
@@ -98,15 +99,15 @@ public class Httpc {
 				i += 2;
 				request.setFileData(inputFileData);
 			} else if (args[i].contains("-o")) {
-				if(args[i+1] != null && args[i+1].length() >0) {
-				   String outputFileName = args[i+1];
-				   request.fileName = outputFileName;
-                    request.isWriteFile = true;
-                } else {
-                    System.out.println("Output file name does not exist.");
-                    return;
-                }				
-				i+=2;
+				if (args[i + 1] != null && args[i + 1].length() > 0) {
+					String outputFileName = args[i + 1];
+					request.fileName = outputFileName;
+					request.isWriteFile = true;
+				} else {
+					System.out.println("Output file name does not exist.");
+					return;
+				}
+				i += 2;
 			} else {
 				System.out.println("Invalid Parameter.");
 				i++;
@@ -127,15 +128,22 @@ public class Httpc {
 				request.setUrl(args[i].substring(1, args[i].length() - 1));
 				i++;
 			} else if (args[i].contains("-h")) {
-				String[] keyValueArray = args[i + 1].split(":");
-				if (keyValueArray.length == 2) {
-					request.getHeaders().add(args[i + 1]);
-					// request.setKey(keyValueArray[0]);
-					// request.setValue(keyValueArray[1]);
-					i += 2;
+				if (args.length > i+1 && args[i + 1] != null && args[i + 1].split(":").length == 2) {
+					String[] keyValueArray = args[i + 1].split(":");
+					if (keyValueArray.length == 2) {
+						request.getHeaders().add(args[i + 1]);
+						// request.setKey(keyValueArray[0]);
+						// request.setValue(keyValueArray[1]);
+						i += 2;
+					} else {
+						System.out.println("Data format incorrect");
+						logger.info("Data format for key value incorrect.");
+						return;
+					}
 				} else {
 					System.out.println("Data format incorrect");
-					logger.info("Data format for key value incorrect.");
+					i++;
+					return;
 				}
 			} else if (args[i].contains("-d")) {
 				System.out.println("Invalid Argument");

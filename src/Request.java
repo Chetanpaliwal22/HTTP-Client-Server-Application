@@ -29,6 +29,7 @@ public class Request {
 	boolean isdfOptionDone = false;
 	String crlf = "\r\n";
 	public boolean isWriteFile;
+	public String redirectURL = "";
 
 	public boolean isIsdfOptionDone() {
 		return isdfOptionDone;
