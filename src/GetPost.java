@@ -55,35 +55,37 @@ public class GetPost {
 
 		try {
 			if (request != null) {
+
 				while (true) {
-				int lengthURL = 0;
-				if (request.getUrl() != null) {
-					lengthURL = request.getUrl().length();
-				}
-
-				System.out.println("URL: " + request.getUrl());
-
-				if (request.getUrl() == null || request.getUrl().isEmpty() || request.getUrl().equalsIgnoreCase("")) {
-					throw new Exception("Get: Missing URL");
-				} else if (lengthURL >= 9 && request.getUrl().substring(0, 9).equals("localhost")) {
-					int indexLocation = request.getUrl().indexOf("/", 9);
-					request.host = request.getUrl().substring(0, 9);
-					request.localHostPort = 8080;
-					request.port = request.localHostPort;
-					// request.host = request.getUrl().substring(0, 9);
-					if (indexLocation != -1) {
-						path = request.getUrl().substring(indexLocation);
+					int lengthURL = 0;
+					if (request.getUrl() != null) {
+						lengthURL = request.getUrl().length();
 					}
-				} else {
-					int indexLocation = request.getUrl().indexOf("/", 9);
-					if (indexLocation != -1) {
-						request.host = request.getUrl().substring(7, indexLocation);
-						path = request.getUrl().substring(indexLocation);
-					} else if (indexLocation == -1) {
-						request.host = request.getUrl().substring(7, request.getUrl().length());
+
+					System.out.println("URL: " + request.getUrl());
+
+					if (request.getUrl() == null || request.getUrl().isEmpty()
+							|| request.getUrl().equalsIgnoreCase("")) {
+						throw new Exception("Get: Missing URL");
+					} else if (lengthURL >= 9 && request.getUrl().substring(0, 9).equals("localhost")) {
+						int indexLocation = request.getUrl().indexOf("/", 9);
+						request.host = request.getUrl().substring(0, 9);
+						request.localHostPort = 8080;
+						request.port = request.localHostPort;
+						// request.host = request.getUrl().substring(0, 9);
+						if (indexLocation != -1) {
+							path = request.getUrl().substring(indexLocation);
+						}
+					} else {
+						int indexLocation = request.getUrl().indexOf("/", 9);
+						if (indexLocation != -1) {
+							request.host = request.getUrl().substring(7, indexLocation);
+							path = request.getUrl().substring(indexLocation);
+						} else if (indexLocation == -1) {
+							request.host = request.getUrl().substring(7, request.getUrl().length());
+						}
 					}
-				}
-				
+
 					// Socket socket = new Socket("localhost", 80);
 					Socket socket = new Socket(InetAddress.getByName(request.host), 80);
 					System.out.println("Socket Connected...");
@@ -145,6 +147,12 @@ public class GetPost {
 
 					}
 
+					if(isRedirect) {
+						isRedirect = false;
+						headerMessage = "";
+						bodyMessage = "";
+					}
+					break;
 				}
 			}
 
@@ -153,7 +161,6 @@ public class GetPost {
 			}
 			finalOutput = finalOutput + bodyMessage;
 			System.out.println(finalOutput);
-			System.out.println("header vakye: " + request.getHeaders());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
