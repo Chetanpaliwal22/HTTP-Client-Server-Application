@@ -1,4 +1,5 @@
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -16,9 +17,9 @@ public class Httpc {
 			Request request = new Request();
 			GetPost getPost = new GetPost();
 
-			if(args == null || args.length == 0)
+			if (args == null || args.length == 0)
 				throw new Exception("No Argument found!");
-				
+
 			if (args[1].equalsIgnoreCase("get")) {
 				getGetRequest(args, request, getPost);
 			} else if (args[1].equalsIgnoreCase("post")) {
@@ -43,6 +44,8 @@ public class Httpc {
 			} else if (args[i].contains("-h")) {
 				String[] keyValueArray = args[i + 1].split(":");
 				if (keyValueArray.length == 2) {
+					// System.out.println("in httpc calss: "+args[i+1]);
+					request.getHeaders().add(args[i + 1]);
 					request.setKey(keyValueArray[0]);
 					request.setValue(keyValueArray[1]);
 					i += 2;
@@ -50,29 +53,51 @@ public class Httpc {
 					System.out.println("Data format incorrect");
 					logger.info("Data format for key value incorrect.");
 				}
-			} else if (args[i].equalsIgnoreCase("-d") && !request.isfOptionStatus()) {
+			} else if (args[i].equalsIgnoreCase("-d")) {
+				if (request.isdfOptionDone) {
+					System.out.println("d f Option already utilized. Incorrect Request.");
+					return;
+				}
 				request.setInlineData(args[i + 1]);
+				request.isdfOptionDone = true;
 				i += 2;
 			} else if (args[i].contains("http")) {
-				request.setUrl(args[i].substring(1, args[i].length()-1));
+				request.setUrl(args[i].substring(1, args[i].length() - 1));
 				i++;
 			} else if (args[i].contains("-f") && !request.isdOptionStatus()) {
+				request.fOptionStatus = true;
+
 				String inputFileData = "";
+				File file = new File(args[i + 1]);
+				System.out.println(args[i+1]);
 				FileReader fr = new FileReader(args[i + 1]);
 
 				int charFile = 0;
-				while ((i = fr.read()) != -1) {
+				String fileData = "";
+				if (!file.exists()) {
+					System.out.println("File doesn't exist.");
+					return;
+				}
+				int k =0;
+				while ((k = fr.read()) != -1) {
 					inputFileData += (char) charFile;
 				}
-				System.out.println("Input Data: " + inputFileData);
+				fileData += "--" + "Boundary Condition Here" + request.crlf;
+				fileData += "Content-Disposition: form-data; name=\"file\"; filename=" + file + request.crlf;
+				fileData += "Content-Type: text/plain" + request.crlf;
+				fileData += "Content-Length:" + inputFileData.length() + request.crlf;
+				fileData += request.crlf;
+				fileData += inputFileData + request.crlf;
+				fileData += "--" + request.crlf;
+				request.setFileData(fileData);
+				System.out.println("Input File Data: " + inputFileData);
 				i += 2;
 				request.setFileData(inputFileData);
 			} else if (args[i].contains("-o")) {
 				// Pending
 				i++;
 			} else {
-
-				 System.out.println("Invalid Parameter.");
+				System.out.println("Invalid Parameter.");
 				i++;
 			}
 		}
@@ -88,20 +113,27 @@ public class Httpc {
 				request.setVerbose(true);
 				i++;
 			} else if (args[i].contains("http")) {
-				request.setUrl(args[i].substring(1, args[i].length()-1));
+				request.setUrl(args[i].substring(1, args[i].length() - 1));
 				i++;
 			} else if (args[i].contains("-h")) {
 				String[] keyValueArray = args[i + 1].split(":");
 				if (keyValueArray.length == 2) {
-					request.setKey(keyValueArray[0]);
-					request.setValue(keyValueArray[1]);
+					request.getHeaders().add(args[i + 1]);
+					// request.setKey(keyValueArray[0]);
+					// request.setValue(keyValueArray[1]);
 					i += 2;
 				} else {
 					System.out.println("Data format incorrect");
 					logger.info("Data format for key value incorrect.");
 				}
-			} else {
+			} else if (args[i].contains("-d")) {
+				System.out.println("Invalid Argument");
+				return;
+			}
+
+			else {
 				// System.out.println("do nothing");
+				System.out.println("Invalid Argument.");
 				i++;
 			}
 		}

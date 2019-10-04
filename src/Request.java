@@ -12,16 +12,35 @@ public class Request {
 	public int port = 80;
 	public int localHostPort = 8080;
 	public String host ="";
-	public String value;
-	public boolean isVerbose;
+	public String value = "";
+	public boolean isVerbose = false;
 	Map<String, String> requestParameter;
-	public String fileData;
-	public String inlineData;
+	public String fileData = "";
+	public String inlineData = "";
 	public String userAgent = "Windows NT 6.3";
 	public int[] redirectCodeArray = {301,302,303};
 	public boolean dOptionStatus = false;
 	public boolean fOptionStatus = false;
 	String USER_AGENT = "CN Concordia - HTTP/1.0";
+	ArrayList<String> headers = new ArrayList<String>();
+	boolean isdfOptionDone = false;
+	String crlf = "\r\n";
+
+	public boolean isIsdfOptionDone() {
+		return isdfOptionDone;
+	}
+
+	public void setIsdfOptionDone(boolean isdfOptionDone) {
+		this.isdfOptionDone = isdfOptionDone;
+	}
+
+	public ArrayList<String> getHeaders() {
+		return headers;
+	}
+
+	public void setHeaders(ArrayList<String> headers) {
+		this.headers = headers;
+	}
 
 	public boolean isdOptionStatus() {
 		return dOptionStatus;
