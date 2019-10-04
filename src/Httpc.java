@@ -89,15 +89,15 @@ public class Httpc {
 				while ((fileLine = bufferedReader.readLine()) != null) {
 					inputFileData += fileLine;
 				}
-				fileData += "--" + "Boundary Condition Here" + request.crlf;
+				fileData += "--gc0p4Jq0M2Yt08jU534c0p" + request.crlf;
 				fileData += "Content-Disposition: form-data; name=\"file\"; filename=" + file + request.crlf;
 				fileData += "Content-Type: text/plain" + request.crlf;
 				fileData += "Content-Length:" + inputFileData.length() + request.crlf;
 				fileData += request.crlf;
 				fileData += inputFileData + request.crlf;
-				fileData += "--" + request.crlf;
+				fileData += "--gc0p4Jq0M2Yt08jU534c0p--" + request.crlf;
 				request.setFileData(fileData);
-				System.out.println("Input File Data: " + inputFileData);
+				//System.out.println("Input File Data: " + fileData);
 				i += 2;
 				request.setFileData(inputFileData);
 			} else if (args[i].contains("-o")) {

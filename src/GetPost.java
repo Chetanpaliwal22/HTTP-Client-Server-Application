@@ -276,7 +276,7 @@ public class GetPost {
 
 			// For file
 			if (request.fOptionStatus) {
-				bw.write("Content-Type: multipart/form-data; boundary=" + " Boundary Condition over here. " + crlf);
+				bw.write("Content-Type: multipart/form-data; boundary=" +"--gc0p4Jq0M2Yt08jU534c0p--" + crlf);
 			}
 
 			if (request.getHeaders() != null && request.getHeaders().size() > 0) {
@@ -301,7 +301,7 @@ public class GetPost {
 			System.out.println("pushData: " + pushData);
 
 			bw.write(crlf);
-			bw.write(pushData);
+			bw.write(pushData + crlf);
 			bw.flush();
 
 			// Response
