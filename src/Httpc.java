@@ -54,7 +54,7 @@ public class Httpc {
 				request.setInlineData(args[i + 1]);
 				i += 2;
 			} else if (args[i].contains("http")) {
-				request.setUrl(args[i]);
+				request.setUrl(args[i].substring(1, args[i].length()-1));
 				i++;
 			} else if (args[i].contains("-f") && !request.isdOptionStatus()) {
 				String inputFileData = "";
@@ -88,7 +88,7 @@ public class Httpc {
 				request.setVerbose(true);
 				i++;
 			} else if (args[i].contains("http")) {
-				request.setUrl(args[i]);
+				request.setUrl(args[i].substring(1, args[i].length()-1));
 				i++;
 			} else if (args[i].contains("-h")) {
 				String[] keyValueArray = args[i + 1].split(":");

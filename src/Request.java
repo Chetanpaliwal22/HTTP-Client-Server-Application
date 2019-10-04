@@ -9,7 +9,7 @@ public class Request {
 
 	public String url;
 	public String key;
-	public String port = "80";
+	public int port = 80;
 	public int localHostPort = 8080;
 	public String host ="";
 	public String value;
@@ -21,6 +21,7 @@ public class Request {
 	public int[] redirectCodeArray = {301,302,303};
 	public boolean dOptionStatus = false;
 	public boolean fOptionStatus = false;
+	String USER_AGENT = "CN Concordia - HTTP/1.0";
 
 	public boolean isdOptionStatus() {
 		return dOptionStatus;
