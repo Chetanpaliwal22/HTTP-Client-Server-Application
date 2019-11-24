@@ -1,3 +1,4 @@
+package client;
 /**
  * This is response class for http client
  */
